@@ -1,0 +1,5 @@
+# Exclude all object files
+*.o
+
+# Exclude the .vscode configuration directory
+.vscode/

@@ -1,0 +1,19 @@
+
+void printf(char* str)
+{
+    unsigned short* VideoMemory = (unsigned short*)0xb8000;
+
+    for(int i =0; str[i] != '\0'; ++i)
+    VideoMemory[i] = (VideoMemory[i] & 0xFF00) | str[i]; // so we keep the high bytes which are information about the color and we modify the ascii character.
+}
+
+
+void kernelMain(void* multiboot_structure, unsigned int magicnumber)
+{
+    printf("Hello World!---"); // Gonna create a small printf because we cant clal the library when there is no os
+
+    // we dont want the kernel to stop so at the end we will just go into an infinite loop:
+
+    while(1);
+
+}
