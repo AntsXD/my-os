@@ -8,7 +8,7 @@ void printf(char* str)
 }
 
 
-void kernelMain(void* multiboot_structure, unsigned int magicnumber)
+extern "C" void kernelMain(void* multiboot_structure, unsigned int magicnumber)
 {
     printf("Hello World!---"); // Gonna create a small printf because we cant clal the library when there is no os
 
