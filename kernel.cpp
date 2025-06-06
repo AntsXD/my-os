@@ -10,7 +10,7 @@ void printf(char* str)
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
 extern "C" constructor end_ctors;
-extern "C" void callConstructors()
+extern "C" void callConstructors() // we do this so that all constructors are called before the kernel starts so it operates smoothly.
 {
     for(constructor* i = &start_ctors; i != &end_ctors; i++)
     {
@@ -23,7 +23,7 @@ extern "C" void callConstructors()
 
 extern "C" void kernelMain(void* multiboot_structure, unsigned int magicnumber)
 {
-    printf("Hello World!---"); // Gonna create a small printf because we cant clal the library when there is no os
+    printf("Hello World!---"); // Gonna create a small printf because we cant call the library when there is no os
 
     // we dont want the kernel to stop so at the end we will just go into an infinite loop:
 
