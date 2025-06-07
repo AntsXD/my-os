@@ -1,6 +1,7 @@
 # Exclude all object files
 *.o
 *.bin
+*.iso
 
 # Exclude the .vscode configuration directory
 .vscode/
