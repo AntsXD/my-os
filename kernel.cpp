@@ -1,5 +1,5 @@
 #include "types.h"
-
+#include "gdt.h"
 
 
 
@@ -31,6 +31,7 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber)
     printf("Hello World!---"); // Gonna create a small printf because we cant call the library when there is no os
 
     // we dont want the kernel to stop so at the end we will just go into an infinite loop:
+    GlobalDescriptorTable gdt;
 
     while(1);
 

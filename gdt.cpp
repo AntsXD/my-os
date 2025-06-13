@@ -29,7 +29,7 @@ uint16_t GlobalDescriptorTable::CodeSegmentSelector() //index of the code segmen
     return (uint8_t*)&codeSegmentSelector - (uint8_t*)this;
 }
 
-GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(uint32_t base, uint32_t limit, uint8_t type)
+GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(uint32_t base, uint32_t limit, uint8_t flags)
 {
     uint8_t* target = (uint8_t*) this;
     if(limit<= 65536)
@@ -46,8 +46,36 @@ GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(uint32_t base, uint3
     }
     target[0] = limit & 0xFF; //first byte of limit
     target[1] = (limit >> 8) & 0xFF; //second byte of limit
-    target[6] |= (limit >> 16 ) & 0xF //the 4 bit pat of the limit
+    target[6] |= (limit >> 16 ) & 0xF; //the 4 bit pat of the limit
+
+    target[2] = base  & 0xFF;
+    target[3] = ( base >> 8 ) & 0xFF;
+    target[4] = ( base >> 16) & 0xFF;
+    target[7] = ( base >> 24) & 0xFF;
+
+    target[5]= flags;
+}
 
 
+uint32_t GlobalDescriptorTable::SegmentDescriptor::Base(){
+    uint8_t* target = (uint8_t*) this;
+    uint32_t result = target[7];
+    result = (result << 8) + target[4];
+    result = (result << 8) + target[3];
+    result = (result << 8) + target[2];
+    return result;
+   
+}
 
+
+uint32_t GlobalDescriptorTable::SegmentDescriptor::Limit(){
+    uint8_t* target = (uint8_t*)this;
+    uint32_t result = target[6] & 0xF;
+    result = (result << 8) + target[1];
+    result = (result << 8) + target[0];
+
+    if((target[6] & 0xC0) == 0xC0 )
+        result = (result << 12) | 0xFFF;
+
+    return result;
 }
